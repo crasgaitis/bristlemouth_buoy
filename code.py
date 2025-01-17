@@ -5,6 +5,7 @@ from bm_serial import BristlemouthSerial
 import board
 import digitalio
 import time
+from utils import TempSensor
 
 led = digitalio.DigitalInOut(board.LED)
 led.direction = digitalio.Direction.OUTPUT
