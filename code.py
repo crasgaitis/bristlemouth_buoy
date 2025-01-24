@@ -1,6 +1,7 @@
 # To be run on Mu 1.2.0 editor, CircuitPython.
 
 # Write your code here :-)
+import pandas as pd
 from bm_serial import BristlemouthSerial
 import board
 import digitalio
@@ -11,6 +12,12 @@ led = digitalio.DigitalInOut(board.LED)
 led.direction = digitalio.Direction.OUTPUT
 bm = BristlemouthSerial()
 last_send = time.time()
+
+file_name = "/data.csv"
+
+if file_name not in os.listdir("/"):
+    with open(file_name, "w") as f:
+        f.write("Timestamp,Sensor1,Details\n")
 
 while True:
     now = time.time()
@@ -23,4 +30,8 @@ while True:
             "any_file_name.log",
             "Sensor 1: 1234.56. More detailed human-readable info for the SD card logs.",
         )
+        
+        with open(file_name, "a") as f:
+            f.write(f"{now},{sensor1_value},{details}\n")
+            
         led.value = False
