@@ -1,0 +1,5 @@
+Bristlemouth Dev kit: https://bristlemouth.notion.site/Bristlemouth-Dev-Kit-Guide-Serial-Client-for-CircuitPython-8a04e3bd59604b419228ac9abaf18c3e
+RP2040 microcontroller: https://learn.adafruit.com/adafruit-feather-rp2040-pico/circuitpython
+tsl2591 light sensor: https://learn.adafruit.com/adafruit-tsl2591/python-circuitpython
+bmp280 air pressuren sensor: https://learn.adafruit.com/adafruit-bmp280-barometric-pressure-plus-temperature-sensor-breakout/circuitpython-test
+ms5803: need to adjust library or calibration
