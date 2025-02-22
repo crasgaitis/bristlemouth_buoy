@@ -1,70 +1,36 @@
-# To be run on Mu 1.2.0 editor, CircuitPython.
-
-# -------------------------------------------------------------------------------
-# Import statements
-# -------------------------------------------------------------------------------
-
-import pandas as pd
 from bm_serial import BristlemouthSerial
 import board
 import digitalio
 import time
-from utils.utils import TempSensor
-from utils.machine import Pin
-from utils.onewire import OneWire
-from utils.ds18x20 import DS18X20
+import adafruit_bmp280
+import adafruit_tsl2591
+i2c = board.I2C()
+sensorL = adafruit_tsl2591.TSL2591(i2c)
 
-# -------------------------------------------------------------------------------
-# Set up pins for the DS18B20
-# -------------------------------------------------------------------------------
 
-p12 = Pin(12, Pin.OUT)  # Pin 12 is power supplied to the DS18B20, V+
-p12.value(1)            # set Pin 12 to 3V
-
-ow = OneWire(Pin(13))   # Pin 13 is the data pin for the DS18B20
-ds = DS18X20(ow)        # Initialize a ds18b20 object
-
-# -------------------------------------------------------------------------------
-# LED initialization
-# -------------------------------------------------------------------------------
-
+from adafruit_onewire.bus import OneWireBus
+import adafruit_ds18x20
+ow_bus = OneWireBus(board.D5)
+devices = ow_bus.scan()
+ds18b20 = adafruit_ds18x20.DS18X20(ow_bus, devices[0])
 led = digitalio.DigitalInOut(board.LED)
 led.direction = digitalio.Direction.OUTPUT
 bm = BristlemouthSerial()
-
-# -------------------------------------------------------------------------------
-# Set up save file
-# -------------------------------------------------------------------------------
-
-file_name = "/data.csv"
-
-if file_name not in os.listdir("/"):
-    with open(file_name, "w") as f:
-        f.write("Timestamp,Sensor1,Details\n")
-
-# -------------------------------------------------------------------------------            
-# Get continuous temperature measurements
-# -------------------------------------------------------------------------------
-
 last_send = time.time()
+
+i2c = board.I2C()
+sensorAP = adafruit_bmp280.Adafruit_BMP280_I2C(i2c)
 
 while True:
     now = time.time()
-    if now - last_send > 60:
+    if now - last_send > 15:
         led.value = True
         last_send = now
-        roms = ds.scan()    # Repeat the scan, in case we've added or removed a temp sensor (we won't be doing this)
-        ds.convert_temp()   # Obtain a temperature reading
-        temp_info = ds.read_temp(rom)
         print("publishing", now)
-        print("temp info", temp_info)
+
         #bm.spotter_tx(b"sensor1: 1234.56, binary_ok_too: \x00\x01\x02\x03\xff\xfe\xfd")
-        bm_serial.spotter_log(
-            "any_file_name.log",
-            "Sensor 1: 1234.56. More detailed human-readable info for the SD card logs.",
+        bm.spotter_log(
+            "Temperature_test.log",
+            "Sensor 1:"+'Temperature: {0:0.3f} °C'.format(ds18b20.temperature)+ " 'Temperature: {} degrees C'".format(sensorAP.temperature)+'Pressure: {}hPa'.format(sensorAP.pressure)+'Light: {0}lux'.format(sensorL.lux)
         )
-        
-        with open(file_name, "a") as f:
-            f.write(f"{now},{temp_info},{details}\n")
-            
         led.value = False
