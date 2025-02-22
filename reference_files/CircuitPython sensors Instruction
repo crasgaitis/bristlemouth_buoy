@@ -2,4 +2,6 @@ Bristlemouth Dev kit: https://bristlemouth.notion.site/Bristlemouth-Dev-Kit-Guid
 RP2040 microcontroller: https://learn.adafruit.com/adafruit-feather-rp2040-pico/circuitpython
 tsl2591 light sensor: https://learn.adafruit.com/adafruit-tsl2591/python-circuitpython
 bmp280 air pressuren sensor: https://learn.adafruit.com/adafruit-bmp280-barometric-pressure-plus-temperature-sensor-breakout/circuitpython-test
-ms5803: need to adjust library or calibration
+ms5803 water pressure sensor: need to adjust library or calibration
+ds18B20 temprerature sensor: https://learn.adafruit.com/using-ds18b20-temperature-sensor-with-circuitpython/circuitpython
+                            https://learn.adafruit.com/using-ds18b20-temperature-sensor-with-circuitpython/hardware
